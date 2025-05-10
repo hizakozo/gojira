@@ -1,0 +1,214 @@
+openapi: 3.0.0
+info:
+  title: openapi
+  version: '1.8.0'
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  '/tickets':
+    post:
+      operationId: postTicket
+      tags:
+        - Ticket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketRequest'
+      responses:
+        '200':
+          description: OK
+  '/projects/{projectId}/tickets':
+    parameters:
+      - schema:
+          type: string
+        name: projectId
+        in: path
+        required: true
+    get:
+      operationId: getTicketsByProjectId
+      tags:
+        - Ticket
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TicketResponse'
+  '/tickets/{ticketId}':
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+        name: ticketId
+        in: path
+        required: true
+    get:
+      operationId: getTicketTicketId
+      tags:
+        - Ticket
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketResponse'
+    put:
+      operationId: putTicketTicketId
+      tags:
+        - Ticket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketRequest'
+      responses:
+        '200':
+          description: OK
+    delete:
+      operationId: deleteTicketTicketId
+      tags:
+        - Ticket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketResponse'
+      responses:
+        '200':
+          description: OK
+  '/projects':
+    post:
+      operationId: postProject
+      tags:
+        - Project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectRequest'
+      responses:
+        '200':
+          description: OK
+    get:
+      operationId: getProjects
+      tags:
+          - Project
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectResponse'
+  '/projects/{projectId}':
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+        name: projectId
+        in: path
+        required: true
+    get:
+      operationId: getProjectProjectId
+      tags:
+        - Project
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectResponse'
+    put:
+      operationId: putProjectProjectId
+      tags:
+        - Project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectRequest'
+      responses:
+        '200':
+          description: OK
+    delete:
+      operationId: deleteProjectProjectId
+      tags:
+        - Project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectResponse'
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    ProjectResponse:
+      title: ProjectResponse
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+      required:
+        - id
+        - name
+        - description
+    ProjectRequest:
+      title: ProjectRequest
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+      required:
+        - name
+        - description
+    TicketResponse:
+      title: TicketResponse
+      type: object
+      properties:
+        ticketId:
+          type: string
+          format: uuid
+        projectId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        content:
+          type: string
+      required:
+        - ticketId
+        - projectId
+        - title
+        - content
+    TicketRequest:
+      title: TicketRequest
+      type: object
+      properties:
+        projectId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        content:
+          type: string
+      required:
+        - projectId
+        - title
+        - content

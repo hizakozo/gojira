@@ -1,0 +1,6 @@
+src/main/kotlin/com/example/gojira_api/controller/gen/api/ProjectsController.kt
+src/main/kotlin/com/example/gojira_api/controller/gen/api/TicketsController.kt
+src/main/kotlin/com/example/gojira_api/controller/gen/model/ProjectRequest.kt
+src/main/kotlin/com/example/gojira_api/controller/gen/model/ProjectResponse.kt
+src/main/kotlin/com/example/gojira_api/controller/gen/model/TicketRequest.kt
+src/main/kotlin/com/example/gojira_api/controller/gen/model/TicketResponse.kt

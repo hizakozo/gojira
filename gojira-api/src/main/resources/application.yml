@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:${DB_PORT:5432}/${DB_NAME:gojira}
+    username: ${DB_USER:docker}
+    password: ${DB_PASSWORD:docker}
+  liquibase:
+    enabled: true
+    drop-first: false
+    change-log: classpath:liquibase/xml/db.changelog.xml
+    default-schema: public
