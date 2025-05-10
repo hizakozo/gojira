@@ -5,6 +5,14 @@ info:
 servers:
   - url: 'http://localhost:8080'
 paths:
+  '/signin':
+    post:
+      operationId: signIn
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
   '/tickets':
     post:
       operationId: postTicket

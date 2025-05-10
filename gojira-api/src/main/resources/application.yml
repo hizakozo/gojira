@@ -8,3 +8,10 @@ spring:
     drop-first: false
     change-log: classpath:liquibase/xml/db.changelog.xml
     default-schema: public
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://${AUTH0_DOMAIN}/
+          jwk-set-uri: https://${AUTH0_DOMAIN}/.well-known/jwks.json
+gojira-api-jwt-secret: ${GOJIRA_API_JWT_SECRET}
