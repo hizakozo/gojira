@@ -8,6 +8,7 @@ import com.example.gojira_api.driver.gen.tables.Databasechangelog
 import com.example.gojira_api.driver.gen.tables.Databasechangeloglock
 import com.example.gojira_api.driver.gen.tables.Projects
 import com.example.gojira_api.driver.gen.tables.Tickets
+import com.example.gojira_api.driver.gen.tables.Users
 
 import kotlin.collections.List
 
@@ -49,12 +50,18 @@ open class Public : SchemaImpl("public", DefaultCatalog.DEFAULT_CATALOG) {
      */
     val TICKETS: Tickets get() = Tickets.TICKETS
 
+    /**
+     * The table <code>public.users</code>.
+     */
+    val USERS: Users get() = Users.USERS
+
     override fun getCatalog(): Catalog = DefaultCatalog.DEFAULT_CATALOG
 
     override fun getTables(): List<Table<*>> = listOf(
         Databasechangelog.DATABASECHANGELOG,
         Databasechangeloglock.DATABASECHANGELOGLOCK,
         Projects.PROJECTS,
-        Tickets.TICKETS
+        Tickets.TICKETS,
+        Users.USERS
     )
 }

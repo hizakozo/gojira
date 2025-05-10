@@ -23,8 +23,8 @@ class SigninController: ISigninController {
         }
         println("JWT: $jwt")
         println("User ID: ${jwt.subject}")
-        println("Email: ${jwt.getClaim<String>("email")}")
-        println("Name: ${jwt.getClaim<String>("name")}")
+        println("Email: ${jwt.getClaim<String>("https://gojira-app.example.com/email")}")
+        println("Name: ${jwt.getClaim<String>("https://gojira-app.example.com/name")}")
 
         return ServerResponse.ok().buildAndAwait()
     }

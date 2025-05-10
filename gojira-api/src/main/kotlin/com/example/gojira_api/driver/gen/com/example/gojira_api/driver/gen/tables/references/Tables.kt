@@ -8,6 +8,7 @@ import com.example.gojira_api.driver.gen.tables.Databasechangelog
 import com.example.gojira_api.driver.gen.tables.Databasechangeloglock
 import com.example.gojira_api.driver.gen.tables.Projects
 import com.example.gojira_api.driver.gen.tables.Tickets
+import com.example.gojira_api.driver.gen.tables.Users
 
 
 
@@ -30,3 +31,8 @@ val PROJECTS: Projects = Projects.PROJECTS
  * The table <code>public.tickets</code>.
  */
 val TICKETS: Tickets = Tickets.TICKETS
+
+/**
+ * The table <code>public.users</code>.
+ */
+val USERS: Users = Users.USERS
