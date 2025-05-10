@@ -1,6 +1,7 @@
 package com.example.gojira_api.controller
 
 import com.example.gojira_api.controller.gen.api.ISigninController
+import com.example.gojira_api.usecase.UserUseCase
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.security.core.context.ReactiveSecurityContextHolder
 import org.springframework.security.oauth2.jwt.Jwt
@@ -11,7 +12,9 @@ import org.springframework.web.reactive.function.server.bodyValueAndAwait
 import org.springframework.web.reactive.function.server.buildAndAwait
 
 @Component
-class SigninController: ISigninController {
+class SigninController(
+    private val userUseCase: UserUseCase
+): ISigninController {
     override suspend fun signIn(request: ServerRequest): ServerResponse {
         val jwt = ReactiveSecurityContextHolder.getContext()
             .awaitSingleOrNull()
