@@ -42,10 +42,7 @@ class SigninController(
                 ServerResponse.badRequest().bodyValueAndAwait(it.toResponse())
             },
             { user ->
-                val token = jwtConfig.generateToken(
-                    userId = user.userId.value.toString(),
-                    email = user.email.value
-                )
+                val token = jwtConfig.generateToken(user)
                 ServerResponse.ok().bodyValueAndAwait(Response(token))
             }
         )

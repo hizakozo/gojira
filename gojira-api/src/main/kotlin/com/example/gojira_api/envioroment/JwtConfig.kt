@@ -1,5 +1,6 @@
 package com.example.gojira_api.envioroment
 
+import com.example.gojira_api.domain.user.User
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Value
@@ -21,13 +22,15 @@ class JwtConfig {
     val key: SecretKey get() =
         SecretKeySpec(secret.toByteArray(), SignatureAlgorithm.HS256.jcaName)
 
-    fun generateToken(userId: String, email: String): String {
+    fun generateToken(user: User): String {
         val now = Date()
         val expiryDate = Date(now.time + expiration * 1000)
 
         return Jwts.builder()
-            .setSubject(userId)
-            .claim("email", email)
+            .setSubject(user.userId.value.toString())
+            .claim("email", user.email.value)
+            .claim("name", user.name.value)
+            .claim("externalUserId", user.externalUserId.value)
             .setIssuedAt(now)
             .setExpiration(expiryDate)
             .signWith(key, SignatureAlgorithm.HS256)

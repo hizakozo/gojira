@@ -18,70 +18,60 @@ import java.util.*
 @Component
 class ProjectController(
     private val projectUseCase: ProjectUseCase
-) : IProjectsController {
+) : IProjectsController, Controller {
     override suspend fun postProject(request: ServerRequest): ServerResponse =
-        request.bodyToMono<ProjectRequest>().awaitSingle().let { reqBody ->
-            projectUseCase.createProject(
-                name = reqBody.name,
-                description = reqBody.description
-            ).fold(
-                {
-                    ServerResponse.badRequest().bodyValueAndAwait(it.toResponse())
-                },
-                {
-                    ServerResponse.ok().bodyValueAndAwait(
-                        it.toResponse()
-                    )
-                }
-            )
+        withAuthenticatedUser { user ->
+            request.bodyToMono<ProjectRequest>().awaitSingle().let { reqBody ->
+                projectUseCase.createProject(
+                    name = reqBody.name,
+                    description = reqBody.description
+                ).fold(
+                    {
+                        ServerResponse.badRequest().bodyValueAndAwait(it.toResponse())
+                    },
+                    {
+                        ServerResponse.ok().bodyValueAndAwait(
+                            it.toResponse()
+                        )
+                    }
+                )
+            }
         }
 
     override suspend fun getProjects(request: ServerRequest): ServerResponse =
-        projectUseCase.getAllProjects().fold(
-            {
-                ServerResponse.badRequest().bodyValueAndAwait(it.toResponse())
-            },
-            {
-                ServerResponse.ok().bodyValueAndAwait(
-                    it.map { project -> project.toResponse() }
-                )
-            }
-        )
+        withAuthenticatedUser { user ->
+            projectUseCase.getAllProjects().fold(
+                {
+                    ServerResponse.badRequest().bodyValueAndAwait(it.toResponse())
+                },
+                {
+                    ServerResponse.ok().bodyValueAndAwait(
+                        it.map { project -> project.toResponse() }
+                    )
+                }
+            )
+        }
 
     override suspend fun getTicketsByProjectId(request: ServerRequest): ServerResponse =
-        projectUseCase.getTicketsByProjectId(
-            projectId = UUID.fromString(request.pathVariable("projectId"))
-        ).fold(
-            {
-                ServerResponse.badRequest().bodyValueAndAwait(it.toResponse())
-            },
-            {
-                ServerResponse.ok().bodyValueAndAwait(
-                    it.map { ticket -> ticket.toResponse() }
-                )
-            }
-        )
+        withAuthenticatedUser { user ->
+            projectUseCase.getTicketsByProjectId(
+                projectId = UUID.fromString(request.pathVariable("projectId"))
+            ).fold(
+                {
+                    ServerResponse.badRequest().bodyValueAndAwait(it.toResponse())
+                },
+                {
+                    ServerResponse.ok().bodyValueAndAwait(
+                        it.map { ticket -> ticket.toResponse() }
+                    )
+                }
+            )
+        }
 
     override suspend fun getProjectProjectId(request: ServerRequest): ServerResponse =
-        projectUseCase.getProjectById(
-            projectId = UUID.fromString(request.pathVariable("projectId"))
-        ).fold(
-            {
-                ServerResponse.badRequest().bodyValueAndAwait(it.toResponse())
-            },
-            {
-                ServerResponse.ok().bodyValueAndAwait(
-                    it.toResponse()
-                )
-            }
-        )
-
-    override suspend fun putProjectProjectId(request: ServerRequest): ServerResponse =
-        request.bodyToMono<ProjectRequest>().awaitSingle().let { reqBody ->
-            projectUseCase.updateProject(
-                projectId = UUID.fromString(request.pathVariable("projectId")),
-                name = reqBody.name,
-                description = reqBody.description
+        withAuthenticatedUser { user ->
+            projectUseCase.getProjectById(
+                projectId = UUID.fromString(request.pathVariable("projectId"))
             ).fold(
                 {
                     ServerResponse.badRequest().bodyValueAndAwait(it.toResponse())
@@ -94,19 +84,41 @@ class ProjectController(
             )
         }
 
-    override suspend fun deleteProjectProjectId(request: ServerRequest): ServerResponse =
-        projectUseCase.deleteProject(
-            projectId = UUID.fromString(request.pathVariable("projectId"))
-        ).fold(
-            {
-                ServerResponse.badRequest().bodyValueAndAwait(it.toResponse())
-            },
-            {
-                ServerResponse.ok().bodyValueAndAwait(
-                    mapOf("success" to it)
+    override suspend fun putProjectProjectId(request: ServerRequest): ServerResponse =
+        withAuthenticatedUser { user ->
+            request.bodyToMono<ProjectRequest>().awaitSingle().let { reqBody ->
+                projectUseCase.updateProject(
+                    projectId = UUID.fromString(request.pathVariable("projectId")),
+                    name = reqBody.name,
+                    description = reqBody.description
+                ).fold(
+                    {
+                        ServerResponse.badRequest().bodyValueAndAwait(it.toResponse())
+                    },
+                    {
+                        ServerResponse.ok().bodyValueAndAwait(
+                            it.toResponse()
+                        )
+                    }
                 )
             }
-        )
+        }
+
+    override suspend fun deleteProjectProjectId(request: ServerRequest): ServerResponse =
+        withAuthenticatedUser { user ->
+            projectUseCase.deleteProject(
+                projectId = UUID.fromString(request.pathVariable("projectId"))
+            ).fold(
+                {
+                    ServerResponse.badRequest().bodyValueAndAwait(it.toResponse())
+                },
+                {
+                    ServerResponse.ok().bodyValueAndAwait(
+                        mapOf("success" to it)
+                    )
+                }
+            )
+        }
 
     private fun ProjectOutput.toResponse() =
         ProjectResponse(
