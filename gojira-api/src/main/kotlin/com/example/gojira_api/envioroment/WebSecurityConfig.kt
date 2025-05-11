@@ -1,10 +1,12 @@
 package com.example.gojira_api.envioroment
 
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.ReactiveAuthenticationManager
+import org.springframework.security.authentication.ReactiveAuthenticationManagerResolver
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
 import org.springframework.security.config.web.server.ServerHttpSecurity
@@ -16,15 +18,16 @@ import org.springframework.security.web.server.authentication.HttpStatusServerEn
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.reactive.CorsConfigurationSource
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
+import org.springframework.web.server.ServerWebExchange
+import reactor.core.publisher.Mono
 
 
 @Configuration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
-class WebSecurityConfig(){
-
-    @Value("\${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
-    lateinit var jwkSetUri: String
+class WebSecurityConfig(
+    private val reactiveAuthenticationManagerConfig: ReactiveAuthenticationManagerConfig,
+) {
 
     val PUBLIC_API_PATH = "/signin"
 
@@ -36,16 +39,25 @@ class WebSecurityConfig(){
             .formLogin { it.disable() }
             .httpBasic { it.authenticationEntryPoint(HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED)) }
             .authorizeExchange { exchange ->
-                exchange
-                    .pathMatchers(PUBLIC_API_PATH).permitAll()
-                    .anyExchange().authenticated()
+                exchange.anyExchange().authenticated()
             }
             .oauth2ResourceServer { oauth2 ->
-                oauth2.jwt { jwt ->
-                    jwt.authenticationManager(reactiveAuthenticationManager())
-                }
+                oauth2.authenticationManagerResolver(authenticationManagerResolver())
             }
             .build()
+    }
+    @Bean
+    fun authenticationManagerResolver(): ReactiveAuthenticationManagerResolver<ServerWebExchange> {
+        val auth0Manager = reactiveAuthenticationManagerConfig.auth0AuthenticationManager()
+        val appManager = reactiveAuthenticationManagerConfig.appAuthenticationManager()
+
+        return ReactiveAuthenticationManagerResolver { exchange ->
+            if (exchange.request.uri.path.startsWith(PUBLIC_API_PATH)) {
+                Mono.just(auth0Manager) // Auth0 用
+            } else {
+                Mono.just(appManager) // アプリ JWT 用
+            }
+        }
     }
 
     @Bean
@@ -62,14 +74,4 @@ class WebSecurityConfig(){
         return source
     }
 
-    @Bean
-    fun reactiveAuthenticationManager(): ReactiveAuthenticationManager {
-        val jwtDecoder = reactiveJwtDecoder()
-        return JwtReactiveAuthenticationManager(jwtDecoder)
-    }
-
-    @Bean
-    fun reactiveJwtDecoder(): ReactiveJwtDecoder {
-        return NimbusReactiveJwtDecoder.withJwkSetUri(jwkSetUri).build()
-    }
 }

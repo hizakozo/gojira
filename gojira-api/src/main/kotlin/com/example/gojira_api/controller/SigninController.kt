@@ -1,7 +1,7 @@
 package com.example.gojira_api.controller
 
 import com.example.gojira_api.controller.gen.api.ISigninController
-import com.example.gojira_api.envioroment.JwtService
+import com.example.gojira_api.envioroment.JwtConfig
 import com.example.gojira_api.usecase.UserUseCase
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.beans.factory.annotation.Value
@@ -15,7 +15,7 @@ import org.springframework.web.reactive.function.server.bodyValueAndAwait
 @Component
 class SigninController(
     private val userUseCase: UserUseCase,
-    private val jwtService: JwtService
+    private val jwtConfig: JwtConfig
 ): ISigninController {
     @Value("\${spring.security.oauth2.resourceserver.jwt.name-space}")
     private lateinit var nameSpace: String
@@ -42,7 +42,7 @@ class SigninController(
                 ServerResponse.badRequest().bodyValueAndAwait(it.toResponse())
             },
             { user ->
-                val token = jwtService.generateToken(
+                val token = jwtConfig.generateToken(
                     userId = user.userId.value.toString(),
                     email = user.email.value
                 )
