@@ -60,6 +60,11 @@ dependencies {
 	jooqGenerator("org.jooq:jooq-codegen:3.19.16")
 	jooqGenerator("org.postgresql:postgresql:42.7.2")
 	jooqGenerator("jakarta.xml.bind:jakarta.xml.bind-api:4.0.2")
+
+	// jwt
+	implementation("io.jsonwebtoken:jjwt-api:0.11.5")                        // JWT (生成と検証)
+	implementation("io.jsonwebtoken:jjwt-impl:0.11.5")                       // JWT 実装
+	implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")                    // JSON パース (JWT 解析)
 }
 
 jooq {
