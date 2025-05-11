@@ -22,9 +22,18 @@ class ProjectDriver(private val defaultDsl: DSLContext) {
             .where(PROJECTS.PROJECT_ID.eq(record.projectId))
             .execute()
 
-    fun delete(projectId: UUID) =
-        defaultDsl.deleteFrom(PROJECTS)
+    fun delete(projectId: UUID, dsl: DSLContext) =
+        dsl.deleteFrom(PROJECTS)
             .where(PROJECTS.PROJECT_ID.eq(projectId))
+            .execute()
+    fun deleteUserProject(userId: UUID, projectId: UUID, dsl: DSLContext) =
+        dsl.deleteFrom(USER_PROJECTS)
+            .where(USER_PROJECTS.USER_ID.eq(userId))
+            .and(USER_PROJECTS.PROJECT_ID.eq(projectId))
+            .execute()
+    fun deleteAllByProjectId(projectId: UUID, dsl: DSLContext) =
+        dsl.deleteFrom(USER_PROJECTS)
+            .where(USER_PROJECTS.PROJECT_ID.eq(projectId))
             .execute()
 
     fun findAllByUserId(userId: UUID): List<ProjectsRecord> =

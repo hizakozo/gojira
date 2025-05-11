@@ -59,8 +59,12 @@ class ProjectRepositoryImpl(
     }
 
 
-    override suspend fun deleteProject(deletableProjectId: DeletableProjectId): Boolean =
-        projectDriver.delete(deletableProjectId.value) > 0
+    override suspend fun deleteProject(deletableProjectId: DeletableProjectId): Unit =
+        dslContext.transactionResult { config ->
+            val dsl = DSL.using(config)
+            projectDriver.delete(deletableProjectId.value, dsl)
+            projectDriver.deleteAllByProjectId(deletableProjectId.value, dsl)
+        }
 
 
     private fun Project.toRecord() =

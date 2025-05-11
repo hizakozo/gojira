@@ -58,7 +58,7 @@ class ProjectUseCase(
         projectRepository.updateProject(updatedProject).toOutput()
     }
 
-    suspend fun deleteProject(projectId: UUID): Either<UseCaseError, Boolean> = either {
+    suspend fun deleteProject(projectId: UUID): Either<UseCaseError, Unit> = either {
         val project = projectRepository.getProjectById(ProjectId.reconstruct(projectId))
             ?: raise(UseCaseError(message = "Project not found", code = ErrorCode.NOT_FOUND))
 

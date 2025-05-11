@@ -7,5 +7,5 @@ interface ProjectRepository {
     suspend fun getProjectById(projectId: ProjectId): Project?
     suspend fun getAllProjectsByUserId(userId: UserId): List<Project>
     suspend fun updateProject(project: Project): Project
-    suspend fun deleteProject(deletableProjectId: DeletableProjectId): Boolean
+    suspend fun deleteProject(deletableProjectId: DeletableProjectId): Unit
 }
