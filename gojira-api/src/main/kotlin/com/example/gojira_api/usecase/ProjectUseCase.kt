@@ -7,6 +7,7 @@ import com.example.gojira_api.domain.project.Project
 import com.example.gojira_api.domain.project.ProjectId
 import com.example.gojira_api.domain.project.ProjectRepository
 import com.example.gojira_api.domain.ticket.TicketRepository
+import com.example.gojira_api.domain.user.UserId
 import com.example.gojira_api.error.Error
 import com.example.gojira_api.error.ErrorCode
 import org.springframework.stereotype.Component
@@ -17,15 +18,15 @@ class ProjectUseCase(
     private val projectRepository: ProjectRepository,
     private val ticketRepository: TicketRepository
 ) {
-    suspend fun createProject(name: String, description: String): Either<UseCaseError, ProjectOutput> = either {
-        val project = Project.create(name, description)
+    suspend fun createProject(name: String, description: String, userId: UserId): Either<UseCaseError, ProjectOutput> = either {
+        val project = Project.create(name, description, userId)
             .mapLeft { UseCaseError(message = it.message, code = ErrorCode.INVALID_REQUEST) }
             .bind()
         projectRepository.createProject(project).toOutput()
     }
 
-    suspend fun getAllProjects(): Either<UseCaseError, List<ProjectOutput>> = either {
-        projectRepository.getAllProjects().map { it.toOutput() }
+    suspend fun getAllProjects(userId: UserId): Either<UseCaseError, List<ProjectOutput>> = either {
+        projectRepository.getAllProjectsByUserId(userId).map { it.toOutput() }
     }
 
     suspend fun getProjectById(projectId: UUID): Either<UseCaseError, ProjectOutput> = either {

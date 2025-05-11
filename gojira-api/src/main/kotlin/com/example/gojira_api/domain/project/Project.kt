@@ -1,20 +1,26 @@
 package com.example.gojira_api.domain.project
 
 import arrow.core.Either
+import arrow.core.NonEmptyList
+import arrow.core.NonEmptySet
+import arrow.core.nonEmptySetOf
 import arrow.core.raise.either
 import arrow.core.raise.ensure
 import com.example.gojira_api.domain.DomainError
+import com.example.gojira_api.domain.user.UserId
 import java.util.UUID
 
 class Project private constructor(
     val projectId: ProjectId,
     val name: ProjectName,
+    val userIds: List<UserId>,
     val description: ProjectDescription
 ) {
     companion object {
         fun create(
             name: String,
-            description: String
+            description: String,
+            userId: UserId
         ): Either<DomainError, Project> = either {
             val projectId = ProjectId.create()
             val projectName = ProjectName.create(name).bind()
@@ -22,6 +28,7 @@ class Project private constructor(
             Project(
                 projectId = projectId,
                 name = projectName,
+                userIds = listOf(userId),
                 description = projectDescription
             )
         }
@@ -29,11 +36,13 @@ class Project private constructor(
         fun reconstruct(
             projectId: UUID,
             name: String,
+            userIds: List<UserId>,
             description: String
         ): Project {
             return Project(
                 projectId = ProjectId.reconstruct(projectId),
                 name = ProjectName.reconstruct(name),
+                userIds = userIds,
                 description = ProjectDescription.reconstruct(description)
             )
         }
@@ -48,6 +57,7 @@ class Project private constructor(
         Project(
             projectId = projectId,
             name = projectName,
+            userIds = userIds,
             description = projectDescription
         )
     }

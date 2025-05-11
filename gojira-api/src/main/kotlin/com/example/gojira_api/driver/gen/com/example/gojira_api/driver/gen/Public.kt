@@ -8,6 +8,7 @@ import com.example.gojira_api.driver.gen.tables.Databasechangelog
 import com.example.gojira_api.driver.gen.tables.Databasechangeloglock
 import com.example.gojira_api.driver.gen.tables.Projects
 import com.example.gojira_api.driver.gen.tables.Tickets
+import com.example.gojira_api.driver.gen.tables.UserProjects
 import com.example.gojira_api.driver.gen.tables.Users
 
 import kotlin.collections.List
@@ -51,6 +52,11 @@ open class Public : SchemaImpl("public", DefaultCatalog.DEFAULT_CATALOG) {
     val TICKETS: Tickets get() = Tickets.TICKETS
 
     /**
+     * The table <code>public.user_projects</code>.
+     */
+    val USER_PROJECTS: UserProjects get() = UserProjects.USER_PROJECTS
+
+    /**
      * The table <code>public.users</code>.
      */
     val USERS: Users get() = Users.USERS
@@ -62,6 +68,7 @@ open class Public : SchemaImpl("public", DefaultCatalog.DEFAULT_CATALOG) {
         Databasechangeloglock.DATABASECHANGELOGLOCK,
         Projects.PROJECTS,
         Tickets.TICKETS,
+        UserProjects.USER_PROJECTS,
         Users.USERS
     )
 }

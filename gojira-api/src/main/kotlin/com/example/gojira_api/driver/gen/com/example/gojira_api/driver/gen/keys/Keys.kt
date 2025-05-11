@@ -7,10 +7,12 @@ package com.example.gojira_api.driver.gen.keys
 import com.example.gojira_api.driver.gen.tables.Databasechangeloglock
 import com.example.gojira_api.driver.gen.tables.Projects
 import com.example.gojira_api.driver.gen.tables.Tickets
+import com.example.gojira_api.driver.gen.tables.UserProjects
 import com.example.gojira_api.driver.gen.tables.Users
 import com.example.gojira_api.driver.gen.tables.records.DatabasechangeloglockRecord
 import com.example.gojira_api.driver.gen.tables.records.ProjectsRecord
 import com.example.gojira_api.driver.gen.tables.records.TicketsRecord
+import com.example.gojira_api.driver.gen.tables.records.UserProjectsRecord
 import com.example.gojira_api.driver.gen.tables.records.UsersRecord
 
 import org.jooq.ForeignKey
@@ -27,6 +29,7 @@ import org.jooq.impl.Internal
 val DATABASECHANGELOGLOCK_PKEY: UniqueKey<DatabasechangeloglockRecord> = Internal.createUniqueKey(Databasechangeloglock.DATABASECHANGELOGLOCK, DSL.name("databasechangeloglock_pkey"), arrayOf(Databasechangeloglock.DATABASECHANGELOGLOCK.ID), true)
 val PROJECTS_PKEY: UniqueKey<ProjectsRecord> = Internal.createUniqueKey(Projects.PROJECTS, DSL.name("projects_pkey"), arrayOf(Projects.PROJECTS.PROJECT_ID), true)
 val TICKETS_PKEY: UniqueKey<TicketsRecord> = Internal.createUniqueKey(Tickets.TICKETS, DSL.name("tickets_pkey"), arrayOf(Tickets.TICKETS.TICKET_ID), true)
+val USER_PROJECTS_PKEY: UniqueKey<UserProjectsRecord> = Internal.createUniqueKey(UserProjects.USER_PROJECTS, DSL.name("user_projects_pkey"), arrayOf(UserProjects.USER_PROJECTS.USER_ID, UserProjects.USER_PROJECTS.PROJECT_ID), true)
 val UNIQUE_EXTERNAL_USER_ID: UniqueKey<UsersRecord> = Internal.createUniqueKey(Users.USERS, DSL.name("unique_external_user_id"), arrayOf(Users.USERS.EXTERNAL_USER_ID), true)
 val USERS_PKEY: UniqueKey<UsersRecord> = Internal.createUniqueKey(Users.USERS, DSL.name("users_pkey"), arrayOf(Users.USERS.USER_ID), true)
 
@@ -35,3 +38,5 @@ val USERS_PKEY: UniqueKey<UsersRecord> = Internal.createUniqueKey(Users.USERS, D
 // -------------------------------------------------------------------------
 
 val TICKETS__TICKETS_PROJECT_ID_FKEY: ForeignKey<TicketsRecord, ProjectsRecord> = Internal.createForeignKey(Tickets.TICKETS, DSL.name("tickets_project_id_fkey"), arrayOf(Tickets.TICKETS.PROJECT_ID), com.example.gojira_api.driver.gen.keys.PROJECTS_PKEY, arrayOf(Projects.PROJECTS.PROJECT_ID), true)
+val USER_PROJECTS__USER_PROJECTS_PROJECT_ID_FKEY: ForeignKey<UserProjectsRecord, ProjectsRecord> = Internal.createForeignKey(UserProjects.USER_PROJECTS, DSL.name("user_projects_project_id_fkey"), arrayOf(UserProjects.USER_PROJECTS.PROJECT_ID), com.example.gojira_api.driver.gen.keys.PROJECTS_PKEY, arrayOf(Projects.PROJECTS.PROJECT_ID), true)
+val USER_PROJECTS__USER_PROJECTS_USER_ID_FKEY: ForeignKey<UserProjectsRecord, UsersRecord> = Internal.createForeignKey(UserProjects.USER_PROJECTS, DSL.name("user_projects_user_id_fkey"), arrayOf(UserProjects.USER_PROJECTS.USER_ID), com.example.gojira_api.driver.gen.keys.USERS_PKEY, arrayOf(Users.USERS.USER_ID), true)

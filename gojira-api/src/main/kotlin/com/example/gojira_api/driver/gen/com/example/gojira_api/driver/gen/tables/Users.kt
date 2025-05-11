@@ -7,6 +7,9 @@ package com.example.gojira_api.driver.gen.tables
 import com.example.gojira_api.driver.gen.Public
 import com.example.gojira_api.driver.gen.keys.UNIQUE_EXTERNAL_USER_ID
 import com.example.gojira_api.driver.gen.keys.USERS_PKEY
+import com.example.gojira_api.driver.gen.keys.USER_PROJECTS__USER_PROJECTS_USER_ID_FKEY
+import com.example.gojira_api.driver.gen.tables.Projects.ProjectsPath
+import com.example.gojira_api.driver.gen.tables.UserProjects.UserProjectsPath
 import com.example.gojira_api.driver.gen.tables.records.UsersRecord
 
 import java.util.UUID
@@ -19,6 +22,7 @@ import org.jooq.Field
 import org.jooq.ForeignKey
 import org.jooq.InverseForeignKey
 import org.jooq.Name
+import org.jooq.Path
 import org.jooq.PlainSQL
 import org.jooq.QueryPart
 import org.jooq.Record
@@ -31,6 +35,7 @@ import org.jooq.TableField
 import org.jooq.TableOptions
 import org.jooq.UniqueKey
 import org.jooq.impl.DSL
+import org.jooq.impl.Internal
 import org.jooq.impl.SQLDataType
 import org.jooq.impl.TableImpl
 
@@ -90,7 +95,7 @@ open class Users(
     /**
      * The column <code>public.users.name</code>.
      */
-    val NAME: TableField<UsersRecord, String?> = createField(DSL.name("name"), SQLDataType.VARCHAR(255), this, "")
+    val NAME: TableField<UsersRecord, String?> = createField(DSL.name("name"), SQLDataType.VARCHAR(255).nullable(false), this, "")
 
     /**
      * The column <code>public.users.created_at</code>.
@@ -115,9 +120,45 @@ open class Users(
      * Create a <code>public.users</code> table reference
      */
     constructor(): this(DSL.name("users"), null)
+
+    constructor(path: Table<out Record>, childPath: ForeignKey<out Record, UsersRecord>?, parentPath: InverseForeignKey<out Record, UsersRecord>?): this(Internal.createPathAlias(path, childPath, parentPath), path, childPath, parentPath, USERS, null, null)
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    open class UsersPath : Users, Path<UsersRecord> {
+        constructor(path: Table<out Record>, childPath: ForeignKey<out Record, UsersRecord>?, parentPath: InverseForeignKey<out Record, UsersRecord>?): super(path, childPath, parentPath)
+        private constructor(alias: Name, aliased: Table<UsersRecord>): super(alias, aliased)
+        override fun `as`(alias: String): UsersPath = UsersPath(DSL.name(alias), this)
+        override fun `as`(alias: Name): UsersPath = UsersPath(alias, this)
+        override fun `as`(alias: Table<*>): UsersPath = UsersPath(alias.qualifiedName, this)
+    }
     override fun getSchema(): Schema? = if (aliased()) null else Public.PUBLIC
     override fun getPrimaryKey(): UniqueKey<UsersRecord> = USERS_PKEY
     override fun getUniqueKeys(): List<UniqueKey<UsersRecord>> = listOf(UNIQUE_EXTERNAL_USER_ID)
+
+    private lateinit var _userProjects: UserProjectsPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>public.user_projects</code> table
+     */
+    fun userProjects(): UserProjectsPath {
+        if (!this::_userProjects.isInitialized)
+            _userProjects = UserProjectsPath(this, null, USER_PROJECTS__USER_PROJECTS_USER_ID_FKEY.inverseKey)
+
+        return _userProjects;
+    }
+
+    val userProjects: UserProjectsPath
+        get(): UserProjectsPath = userProjects()
+
+    /**
+     * Get the implicit many-to-many join path to the
+     * <code>public.projects</code> table
+     */
+    val projects: ProjectsPath
+        get(): ProjectsPath = userProjects().projects()
     override fun `as`(alias: String): Users = Users(DSL.name(alias), this)
     override fun `as`(alias: Name): Users = Users(alias, this)
     override fun `as`(alias: Table<*>): Users = Users(alias.qualifiedName, this)

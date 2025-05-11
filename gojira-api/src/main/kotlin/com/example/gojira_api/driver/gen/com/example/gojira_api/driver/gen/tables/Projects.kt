@@ -7,7 +7,10 @@ package com.example.gojira_api.driver.gen.tables
 import com.example.gojira_api.driver.gen.Public
 import com.example.gojira_api.driver.gen.keys.PROJECTS_PKEY
 import com.example.gojira_api.driver.gen.keys.TICKETS__TICKETS_PROJECT_ID_FKEY
+import com.example.gojira_api.driver.gen.keys.USER_PROJECTS__USER_PROJECTS_PROJECT_ID_FKEY
 import com.example.gojira_api.driver.gen.tables.Tickets.TicketsPath
+import com.example.gojira_api.driver.gen.tables.UserProjects.UserProjectsPath
+import com.example.gojira_api.driver.gen.tables.Users.UsersPath
 import com.example.gojira_api.driver.gen.tables.records.ProjectsRecord
 
 import java.util.UUID
@@ -138,6 +141,29 @@ open class Projects(
 
     val tickets: TicketsPath
         get(): TicketsPath = tickets()
+
+    private lateinit var _userProjects: UserProjectsPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>public.user_projects</code> table
+     */
+    fun userProjects(): UserProjectsPath {
+        if (!this::_userProjects.isInitialized)
+            _userProjects = UserProjectsPath(this, null, USER_PROJECTS__USER_PROJECTS_PROJECT_ID_FKEY.inverseKey)
+
+        return _userProjects;
+    }
+
+    val userProjects: UserProjectsPath
+        get(): UserProjectsPath = userProjects()
+
+    /**
+     * Get the implicit many-to-many join path to the <code>public.users</code>
+     * table
+     */
+    val users: UsersPath
+        get(): UsersPath = userProjects().users()
     override fun `as`(alias: String): Projects = Projects(DSL.name(alias), this)
     override fun `as`(alias: Name): Projects = Projects(alias, this)
     override fun `as`(alias: Table<*>): Projects = Projects(alias.qualifiedName, this)

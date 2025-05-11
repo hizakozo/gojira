@@ -24,7 +24,8 @@ class ProjectController(
             request.bodyToMono<ProjectRequest>().awaitSingle().let { reqBody ->
                 projectUseCase.createProject(
                     name = reqBody.name,
-                    description = reqBody.description
+                    description = reqBody.description,
+                    user.userId
                 ).fold(
                     {
                         ServerResponse.badRequest().bodyValueAndAwait(it.toResponse())
@@ -40,7 +41,7 @@ class ProjectController(
 
     override suspend fun getProjects(request: ServerRequest): ServerResponse =
         withAuthenticatedUser { user ->
-            projectUseCase.getAllProjects().fold(
+            projectUseCase.getAllProjects(user.userId).fold(
                 {
                     ServerResponse.badRequest().bodyValueAndAwait(it.toResponse())
                 },
