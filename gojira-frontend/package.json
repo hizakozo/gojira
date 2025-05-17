@@ -11,6 +11,7 @@
     "codegen": "openapi-generator-cli generate -g typescript-fetch -i ../open-api/openapi.yaml  -o ./src/features/api --additional-properties=modelPropertyNaming=camelCase,supportsES6=true,withInterfaces=true,typescriptThreePlus=true"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.3.0",
     "@tanstack/react-query": "^5.76.1",
     "@tanstack/react-router": "^1.120.5",
     "react": "^19.1.0",
