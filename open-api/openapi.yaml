@@ -20,6 +20,8 @@ paths:
                 properties:
                   token:
                     type: string
+                required:
+                  - token
   '/tickets':
     post:
       operationId: postTicket

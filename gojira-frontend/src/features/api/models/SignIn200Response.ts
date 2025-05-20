@@ -24,13 +24,14 @@ export interface SignIn200Response {
      * @type {string}
      * @memberof SignIn200Response
      */
-    token?: string;
+    token: string;
 }
 
 /**
  * Check if a given object implements the SignIn200Response interface.
  */
 export function instanceOfSignIn200Response(value: object): value is SignIn200Response {
+    if (!('token' in value) || value['token'] === undefined) return false;
     return true;
 }
 
@@ -44,7 +45,7 @@ export function SignIn200ResponseFromJSONTyped(json: any, ignoreDiscriminator: b
     }
     return {
         
-        'token': json['token'] == null ? undefined : json['token'],
+        'token': json['token'],
     };
 }
 

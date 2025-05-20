@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  */
 data class SignIn200Response(
 
-    @get:JsonProperty("token") val token: kotlin.String? = null
+    @get:JsonProperty("token", required = true) val token: kotlin.String
     ) {
 
 }

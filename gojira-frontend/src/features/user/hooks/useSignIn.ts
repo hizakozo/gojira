@@ -2,8 +2,12 @@ import {useMutation} from "@tanstack/react-query";
 import {authRepository} from "../../repository";
 
 export const useSignIn = (
-    {getAccessToken}: {
-        getAccessToken: () => Promise<string>
+    {
+        getAccessToken,
+        onSuccess,
+    }: {
+        getAccessToken: () => Promise<string>,
+        onSuccess: (arg: {token: string}) => void,
     }
 ) => {
 
@@ -14,10 +18,12 @@ export const useSignIn = (
                 Authorization: `Bearer ${accessToken}`,
             }
         })
+        return {token : response.token}
     }
 
     const { mutateAsync } = useMutation({
-        mutationFn
+        mutationFn,
+        onSuccess,
     })
     return {
         signIn: mutateAsync
