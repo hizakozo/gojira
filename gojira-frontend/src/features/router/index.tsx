@@ -1,7 +1,7 @@
 import {createRootRoute, createRoute, createRouter} from "@tanstack/react-router";
-import {SignUp} from "../user";
-import {ProjectList} from "../project";
-import {SignIn} from "../user/components/SignIn.tsx";
+import {SignUp} from "@/features/user";
+import {SignIn} from "@/features/user/components/SignIn.tsx";
+import {ProjectList} from "@/features/project";
 
 const rootRoute = createRootRoute()
 const indexRoute = createRoute({

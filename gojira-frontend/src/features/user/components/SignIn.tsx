@@ -1,8 +1,8 @@
-import {useSignIn} from "../hooks/useSignIn.ts";
 import {useEffect} from "react";
 import {useNavigate} from "@tanstack/react-router";
 import {useAuth0} from "@auth0/auth0-react";
-import {setAccessToken} from "../../lib/js-cookie";
+import {setAccessToken} from "@/features/lib/js-cookie";
+import {useSignIn} from "@/features/user/hooks/useSignIn.ts";
 
 export const SignIn = () => {
     const {getAccessTokenSilently, isAuthenticated} = useAuth0()
