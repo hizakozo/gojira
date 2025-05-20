@@ -1,8 +1,8 @@
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {projectRepository} from "@/features/repository";
-import {QUERY_KEYS} from "@/features/lib/tanstackQuery/queryKeys.ts";
-import type {ProjectRequest, ProjectResponse} from "@/features/api";
-import {myQueryClient} from "@/features/lib/tanstackQuery/QueryClient.ts";
+import {QUERY_KEYS} from "@/lib/tanstackQuery/queryKeys.ts";
+import type {ProjectRequest, ProjectResponse} from "src/api";
+import {myQueryClient} from "@/lib/tanstackQuery/QueryClient.ts";
 
 export const useCreateProject = () => {
     return useMutation({

@@ -13,17 +13,17 @@
  */
 
 
-import * as runtime from '../runtime';
+import * as runtime from '../runtime.ts';
 import type {
   ProjectRequest,
   ProjectResponse,
-} from '../models/index';
+} from '../models';
 import {
     ProjectRequestFromJSON,
     ProjectRequestToJSON,
     ProjectResponseFromJSON,
     ProjectResponseToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface DeleteProjectProjectIdRequest {
     projectId: string;

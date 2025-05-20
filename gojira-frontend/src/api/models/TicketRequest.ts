@@ -12,79 +12,70 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { mapValues } from '../runtime.ts';
 /**
  * 
  * @export
- * @interface TicketResponse
+ * @interface TicketRequest
  */
-export interface TicketResponse {
+export interface TicketRequest {
     /**
      * 
      * @type {string}
-     * @memberof TicketResponse
-     */
-    ticketId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TicketResponse
+     * @memberof TicketRequest
      */
     projectId: string;
     /**
      * 
      * @type {string}
-     * @memberof TicketResponse
+     * @memberof TicketRequest
      */
     title: string;
     /**
      * 
      * @type {string}
-     * @memberof TicketResponse
+     * @memberof TicketRequest
      */
     content: string;
 }
 
 /**
- * Check if a given object implements the TicketResponse interface.
+ * Check if a given object implements the TicketRequest interface.
  */
-export function instanceOfTicketResponse(value: object): value is TicketResponse {
-    if (!('ticketId' in value) || value['ticketId'] === undefined) return false;
+export function instanceOfTicketRequest(value: object): value is TicketRequest {
     if (!('projectId' in value) || value['projectId'] === undefined) return false;
     if (!('title' in value) || value['title'] === undefined) return false;
     if (!('content' in value) || value['content'] === undefined) return false;
     return true;
 }
 
-export function TicketResponseFromJSON(json: any): TicketResponse {
-    return TicketResponseFromJSONTyped(json, false);
+export function TicketRequestFromJSON(json: any): TicketRequest {
+    return TicketRequestFromJSONTyped(json, false);
 }
 
-export function TicketResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): TicketResponse {
+export function TicketRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): TicketRequest {
     if (json == null) {
         return json;
     }
     return {
         
-        'ticketId': json['ticketId'],
         'projectId': json['projectId'],
         'title': json['title'],
         'content': json['content'],
     };
 }
 
-export function TicketResponseToJSON(json: any): TicketResponse {
-    return TicketResponseToJSONTyped(json, false);
+export function TicketRequestToJSON(json: any): TicketRequest {
+    return TicketRequestToJSONTyped(json, false);
 }
 
-export function TicketResponseToJSONTyped(value?: TicketResponse | null, ignoreDiscriminator: boolean = false): any {
+export function TicketRequestToJSONTyped(value?: TicketRequest | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }
 
     return {
         
-        'ticketId': value['ticketId'],
         'projectId': value['projectId'],
         'title': value['title'],
         'content': value['content'],

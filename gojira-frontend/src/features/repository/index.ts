@@ -1,5 +1,5 @@
-import {AuthApi, Configuration, ProjectApi, TicketApi} from "../api";
-import {getAccessToken} from "@/features/lib/js-cookie";
+import {AuthApi, Configuration, ProjectApi, TicketApi} from "../../api";
+import {getAccessToken} from "@/lib/js-cookie";
 
 const basePath = import.meta.env.VITE_API_BASE_PATH  || "http://localhost:3000";
 

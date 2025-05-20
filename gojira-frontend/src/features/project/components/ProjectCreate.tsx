@@ -1,5 +1,5 @@
-import {Form} from "@/features/lib/reactHookForm/Form.tsx";
-import type {ProjectRequest} from "@/features/api";
+import {Form} from "@/lib/reactHookForm/Form.tsx";
+import type {ProjectRequest} from "src/api";
 import {useCreateProject} from "@/features/project/hooks";
 
 export const ProjectCreate = () => {

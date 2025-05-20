@@ -13,14 +13,14 @@
  */
 
 
-import * as runtime from '../runtime';
+import * as runtime from '../runtime.ts';
 import type {
   SignIn200Response,
-} from '../models/index';
+} from '../models';
 import {
     SignIn200ResponseFromJSON,
     SignIn200ResponseToJSON,
-} from '../models/index';
+} from '../models';
 
 /**
  * AuthApi - interface

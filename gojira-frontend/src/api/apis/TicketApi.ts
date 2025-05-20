@@ -13,17 +13,17 @@
  */
 
 
-import * as runtime from '../runtime';
+import * as runtime from '../runtime.ts';
 import type {
   TicketRequest,
   TicketResponse,
-} from '../models/index';
+} from '../models';
 import {
     TicketRequestFromJSON,
     TicketRequestToJSON,
     TicketResponseFromJSON,
     TicketResponseToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface DeleteTicketTicketIdRequest {
     ticketId: string;
