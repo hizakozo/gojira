@@ -1,3 +1,5 @@
 .idea
 
 gojira-api/.env
+
+gojira-frontend/.env
