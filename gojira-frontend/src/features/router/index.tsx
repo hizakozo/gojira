@@ -1,6 +1,7 @@
 import {createRootRoute, createRoute, createRouter} from "@tanstack/react-router";
 import {SignUp} from "../user";
 import {ProjectList} from "../project";
+import {SignIn} from "../user/components/SignIn.tsx";
 
 const rootRoute = createRootRoute()
 const indexRoute = createRoute({
@@ -17,6 +18,12 @@ const singUpRoute = createRoute({
     component: () => <SignUp />,
 })
 
+const signInRoute = createRoute({
+    getParentRoute: () => userRoute,
+    path: 'sign-in',
+    component: () => <SignIn />,
+})
+
 const projectRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: 'project',
@@ -27,6 +34,7 @@ const routeTree = rootRoute.addChildren([
     indexRoute,
     userRoute.addChildren([
         singUpRoute,
+        signInRoute
     ]),
     projectRoute
 ])
