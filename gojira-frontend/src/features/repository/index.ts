@@ -1,8 +1,18 @@
-import {AuthApi, Configuration} from "../api";
+import {AuthApi, Configuration, ProjectApi, TicketApi} from "../api";
+import {getAccessToken} from "@/features/lib/js-cookie";
 
 const basePath = import.meta.env.VITE_API_BASE_PATH  || "http://localhost:3000";
 
-const apiConfig = new Configuration({
-    basePath
+const AuthApiConfig = new Configuration({
+    basePath,
 });
-export const authRepository = new AuthApi(apiConfig)
+
+const ApiConfig = new Configuration({
+    basePath,
+    headers: {
+        Authorization: `Bearer ${getAccessToken()}`
+    }
+})
+export const authRepository = new AuthApi(AuthApiConfig)
+export const projectRepository = new ProjectApi(ApiConfig)
+export const ticketRepository = new TicketApi(ApiConfig)

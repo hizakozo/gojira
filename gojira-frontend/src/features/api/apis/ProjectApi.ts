@@ -62,7 +62,7 @@ export interface ProjectApiInterface {
 
     /**
      */
-    deleteProjectProjectId(requestParameters: DeleteProjectProjectIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+    deleteProjectProjectId(projectId: string, projectResponse?: ProjectResponse, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
 
     /**
      * 
@@ -75,7 +75,7 @@ export interface ProjectApiInterface {
 
     /**
      */
-    getProjectProjectId(requestParameters: GetProjectProjectIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProjectResponse>;
+    getProjectProjectId(projectId: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProjectResponse>;
 
     /**
      * 
@@ -96,11 +96,11 @@ export interface ProjectApiInterface {
      * @throws {RequiredError}
      * @memberof ProjectApiInterface
      */
-    postProjectRaw(requestParameters: PostProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+    postProjectRaw(requestParameters: PostProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProjectResponse>>;
 
     /**
      */
-    postProject(requestParameters: PostProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+    postProject(projectRequest?: ProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProjectResponse>;
 
     /**
      * 
@@ -110,11 +110,11 @@ export interface ProjectApiInterface {
      * @throws {RequiredError}
      * @memberof ProjectApiInterface
      */
-    putProjectProjectIdRaw(requestParameters: PutProjectProjectIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+    putProjectProjectIdRaw(requestParameters: PutProjectProjectIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProjectResponse>>;
 
     /**
      */
-    putProjectProjectId(requestParameters: PutProjectProjectIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+    putProjectProjectId(projectId: string, projectRequest?: ProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProjectResponse>;
 
 }
 
@@ -152,8 +152,8 @@ export class ProjectApi extends runtime.BaseAPI implements ProjectApiInterface {
 
     /**
      */
-    async deleteProjectProjectId(requestParameters: DeleteProjectProjectIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.deleteProjectProjectIdRaw(requestParameters, initOverrides);
+    async deleteProjectProjectId(projectId: string, projectResponse?: ProjectResponse, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteProjectProjectIdRaw({ projectId: projectId, projectResponse: projectResponse }, initOverrides);
     }
 
     /**
@@ -182,8 +182,8 @@ export class ProjectApi extends runtime.BaseAPI implements ProjectApiInterface {
 
     /**
      */
-    async getProjectProjectId(requestParameters: GetProjectProjectIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProjectResponse> {
-        const response = await this.getProjectProjectIdRaw(requestParameters, initOverrides);
+    async getProjectProjectId(projectId: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProjectResponse> {
+        const response = await this.getProjectProjectIdRaw({ projectId: projectId }, initOverrides);
         return await response.value();
     }
 
@@ -213,7 +213,7 @@ export class ProjectApi extends runtime.BaseAPI implements ProjectApiInterface {
 
     /**
      */
-    async postProjectRaw(requestParameters: PostProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async postProjectRaw(requestParameters: PostProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProjectResponse>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -228,18 +228,19 @@ export class ProjectApi extends runtime.BaseAPI implements ProjectApiInterface {
             body: ProjectRequestToJSON(requestParameters['projectRequest']),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => ProjectResponseFromJSON(jsonValue));
     }
 
     /**
      */
-    async postProject(requestParameters: PostProjectRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.postProjectRaw(requestParameters, initOverrides);
+    async postProject(projectRequest?: ProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProjectResponse> {
+        const response = await this.postProjectRaw({ projectRequest: projectRequest }, initOverrides);
+        return await response.value();
     }
 
     /**
      */
-    async putProjectProjectIdRaw(requestParameters: PutProjectProjectIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async putProjectProjectIdRaw(requestParameters: PutProjectProjectIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProjectResponse>> {
         if (requestParameters['projectId'] == null) {
             throw new runtime.RequiredError(
                 'projectId',
@@ -261,13 +262,14 @@ export class ProjectApi extends runtime.BaseAPI implements ProjectApiInterface {
             body: ProjectRequestToJSON(requestParameters['projectRequest']),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => ProjectResponseFromJSON(jsonValue));
     }
 
     /**
      */
-    async putProjectProjectId(requestParameters: PutProjectProjectIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.putProjectProjectIdRaw(requestParameters, initOverrides);
+    async putProjectProjectId(projectId: string, projectRequest?: ProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProjectResponse> {
+        const response = await this.putProjectProjectIdRaw({ projectId: projectId, projectRequest: projectRequest }, initOverrides);
+        return await response.value();
     }
 
 }

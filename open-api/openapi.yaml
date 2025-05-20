@@ -111,6 +111,10 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectResponse'
     get:
       operationId: getProjects
       tags:
@@ -155,6 +159,10 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectResponse'
     delete:
       operationId: deleteProjectProjectId
       tags:

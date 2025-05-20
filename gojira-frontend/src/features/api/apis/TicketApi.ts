@@ -66,7 +66,7 @@ export interface TicketApiInterface {
 
     /**
      */
-    deleteTicketTicketId(requestParameters: DeleteTicketTicketIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+    deleteTicketTicketId(ticketId: string, ticketResponse?: TicketResponse, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
 
     /**
      * 
@@ -79,7 +79,7 @@ export interface TicketApiInterface {
 
     /**
      */
-    getTicketTicketId(requestParameters: GetTicketTicketIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TicketResponse>;
+    getTicketTicketId(ticketId: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TicketResponse>;
 
     /**
      * 
@@ -92,7 +92,7 @@ export interface TicketApiInterface {
 
     /**
      */
-    getTicketsByProjectId(requestParameters: GetTicketsByProjectIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<TicketResponse>>;
+    getTicketsByProjectId(projectId: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<TicketResponse>>;
 
     /**
      * 
@@ -105,7 +105,7 @@ export interface TicketApiInterface {
 
     /**
      */
-    postTicket(requestParameters: PostTicketRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+    postTicket(ticketRequest?: TicketRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
 
     /**
      * 
@@ -119,7 +119,7 @@ export interface TicketApiInterface {
 
     /**
      */
-    putTicketTicketId(requestParameters: PutTicketTicketIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+    putTicketTicketId(ticketId: string, ticketRequest?: TicketRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
 
 }
 
@@ -157,8 +157,8 @@ export class TicketApi extends runtime.BaseAPI implements TicketApiInterface {
 
     /**
      */
-    async deleteTicketTicketId(requestParameters: DeleteTicketTicketIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.deleteTicketTicketIdRaw(requestParameters, initOverrides);
+    async deleteTicketTicketId(ticketId: string, ticketResponse?: TicketResponse, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteTicketTicketIdRaw({ ticketId: ticketId, ticketResponse: ticketResponse }, initOverrides);
     }
 
     /**
@@ -187,8 +187,8 @@ export class TicketApi extends runtime.BaseAPI implements TicketApiInterface {
 
     /**
      */
-    async getTicketTicketId(requestParameters: GetTicketTicketIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TicketResponse> {
-        const response = await this.getTicketTicketIdRaw(requestParameters, initOverrides);
+    async getTicketTicketId(ticketId: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TicketResponse> {
+        const response = await this.getTicketTicketIdRaw({ ticketId: ticketId }, initOverrides);
         return await response.value();
     }
 
@@ -218,8 +218,8 @@ export class TicketApi extends runtime.BaseAPI implements TicketApiInterface {
 
     /**
      */
-    async getTicketsByProjectId(requestParameters: GetTicketsByProjectIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<TicketResponse>> {
-        const response = await this.getTicketsByProjectIdRaw(requestParameters, initOverrides);
+    async getTicketsByProjectId(projectId: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<TicketResponse>> {
+        const response = await this.getTicketsByProjectIdRaw({ projectId: projectId }, initOverrides);
         return await response.value();
     }
 
@@ -245,8 +245,8 @@ export class TicketApi extends runtime.BaseAPI implements TicketApiInterface {
 
     /**
      */
-    async postTicket(requestParameters: PostTicketRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.postTicketRaw(requestParameters, initOverrides);
+    async postTicket(ticketRequest?: TicketRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.postTicketRaw({ ticketRequest: ticketRequest }, initOverrides);
     }
 
     /**
@@ -278,8 +278,8 @@ export class TicketApi extends runtime.BaseAPI implements TicketApiInterface {
 
     /**
      */
-    async putTicketTicketId(requestParameters: PutTicketTicketIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.putTicketTicketIdRaw(requestParameters, initOverrides);
+    async putTicketTicketId(ticketId: string, ticketRequest?: TicketRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.putTicketTicketIdRaw({ ticketId: ticketId, ticketRequest: ticketRequest }, initOverrides);
     }
 
 }

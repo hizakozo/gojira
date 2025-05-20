@@ -1,0 +1,23 @@
+import {useMutation, useQuery} from "@tanstack/react-query";
+import {projectRepository} from "@/features/repository";
+import {QUERY_KEYS} from "@/features/lib/tanstackQuery/queryKeys.ts";
+import type {ProjectRequest, ProjectResponse} from "@/features/api";
+import {myQueryClient} from "@/features/lib/tanstackQuery/QueryClient.ts";
+
+export const useCreateProject = () => {
+    return useMutation({
+        mutationFn: (data: ProjectRequest) => projectRepository.postProject(data),
+        onSuccess: (data) => {
+            const previousData = myQueryClient.getQueryData<ProjectResponse[]>([QUERY_KEYS.projects])
+            const newData = previousData !== undefined ? [...previousData, data] : [data]
+            myQueryClient.setQueryData<ProjectResponse[]>([QUERY_KEYS.projects], newData)
+        }
+    })
+}
+
+export const useProject = () => {
+    return useQuery({
+        queryFn: () => projectRepository.getProjects(),
+        queryKey: [QUERY_KEYS.projects],
+    })
+}
