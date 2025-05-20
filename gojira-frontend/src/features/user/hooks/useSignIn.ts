@@ -1,15 +1,15 @@
-import {AuthApi} from "../../api";
-import {useAuth0} from "@auth0/auth0-react";
 import {useMutation} from "@tanstack/react-query";
+import {authRepository} from "../../repository";
 
-export const useSignIn = () => {
-    const authApi = new AuthApi()
-    const { getAccessTokenSilently } = useAuth0()
+export const useSignIn = (
+    {getAccessToken}: {
+        getAccessToken: () => Promise<string>
+    }
+) => {
 
     const mutationFn = async () => {
-        const accessToken = await getAccessTokenSilently()
-
-        await authApi.signIn({
+        const accessToken = await getAccessToken()
+        const response = await authRepository.signIn({
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             }

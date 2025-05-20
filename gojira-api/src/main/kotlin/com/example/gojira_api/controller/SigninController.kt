@@ -1,6 +1,7 @@
 package com.example.gojira_api.controller
 
 import com.example.gojira_api.controller.gen.api.ISigninController
+import com.example.gojira_api.controller.gen.model.SignIn200Response
 import com.example.gojira_api.envioroment.JwtConfig
 import com.example.gojira_api.usecase.UserUseCase
 import kotlinx.coroutines.reactor.awaitSingleOrNull
@@ -43,9 +44,8 @@ class SigninController(
             },
             { user ->
                 val token = jwtConfig.generateToken(user)
-                ServerResponse.ok().bodyValueAndAwait(Response(token))
+                ServerResponse.ok().bodyValueAndAwait(SignIn200Response(token))
             }
         )
     }
-    data class Response(val token: String)
 }

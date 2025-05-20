@@ -14,6 +14,13 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  SignIn200Response,
+} from '../models/index';
+import {
+    SignIn200ResponseFromJSON,
+    SignIn200ResponseToJSON,
+} from '../models/index';
 
 /**
  * AuthApi - interface
@@ -28,11 +35,11 @@ export interface AuthApiInterface {
      * @throws {RequiredError}
      * @memberof AuthApiInterface
      */
-    signInRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+    signInRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SignIn200Response>>;
 
     /**
      */
-    signIn(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+    signIn(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SignIn200Response>;
 
 }
 
@@ -43,7 +50,7 @@ export class AuthApi extends runtime.BaseAPI implements AuthApiInterface {
 
     /**
      */
-    async signInRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async signInRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SignIn200Response>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -55,13 +62,14 @@ export class AuthApi extends runtime.BaseAPI implements AuthApiInterface {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => SignIn200ResponseFromJSON(jsonValue));
     }
 
     /**
      */
-    async signIn(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.signInRaw(initOverrides);
+    async signIn(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SignIn200Response> {
+        const response = await this.signInRaw(initOverrides);
+        return await response.value();
     }
 
 }

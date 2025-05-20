@@ -1,14 +1,18 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import {StrictMode} from 'react'
+import {createRoot} from 'react-dom/client'
 import './index.css'
 import {RouterProvider} from "@tanstack/react-router";
 import {router} from "./features/router";
-import {Auth0ProviderContainer} from "./features/auth0/Auth0ProviderContainer.tsx";
+import {Auth0ProviderContainer} from "./features/lib/auth0/Auth0ProviderContainer.tsx";
+import {QueryClientProvider} from "@tanstack/react-query";
+import {MyQueryClient} from "./features/lib/tanstackQuery/QueryClient.ts";
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-      <Auth0ProviderContainer>
-    <RouterProvider router={router} />
+    <StrictMode>
+        <Auth0ProviderContainer>
+            <QueryClientProvider client={MyQueryClient}>
+                <RouterProvider router={router}/>
+            </QueryClientProvider>
         </Auth0ProviderContainer>
-  </StrictMode>,
+    </StrictMode>,
 )

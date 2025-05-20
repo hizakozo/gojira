@@ -1,4 +1,3 @@
-.openapi-generator-ignore
 apis/AuthApi.ts
 apis/ProjectApi.ts
 apis/TicketApi.ts
@@ -6,6 +5,7 @@ apis/index.ts
 index.ts
 models/ProjectRequest.ts
 models/ProjectResponse.ts
+models/SignIn200Response.ts
 models/TicketRequest.ts
 models/TicketResponse.ts
 models/index.ts
