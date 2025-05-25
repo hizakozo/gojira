@@ -3,9 +3,10 @@ import {Input} from "@/components/ui/input.tsx";
 
 type PageLayoutProps = {
     title: string;
-    createButton: React.ReactNode;
-    onSearchChange: (value: string) => void;
+    createButton?: React.ReactNode;
+    onSearchChange?: (value: string) => void;
     children: React.ReactNode;
+    titleOnly?: boolean; // オプションでタイトルのみの表示を制御
 };
 
 export const FeatureLayout: React.FC<PageLayoutProps> = ({
@@ -13,6 +14,7 @@ export const FeatureLayout: React.FC<PageLayoutProps> = ({
                                                              createButton,
                                                              onSearchChange,
                                                              children,
+                                                                titleOnly = false, // デフォルトはfalse
                                                          }) => {
     return (
         <div className="px-6 py-4">
@@ -21,12 +23,18 @@ export const FeatureLayout: React.FC<PageLayoutProps> = ({
                 <h1 className="text-2xl font-bold">{title}</h1>
 
                 <div className="flex items-center gap-2">
-                    {createButton}
-                    <Input
-                        type="text"
-                        placeholder="検索"
-                        onChange={(e) => onSearchChange(e.target.value)}
-                    />
+                    {
+                        !titleOnly && (
+                            <>
+                                {createButton}
+                                <Input
+                                    type="text"
+                                    placeholder="検索"
+                                    onChange={(e) => onSearchChange?.(e.target.value)}
+                                />
+                            </>
+                        )
+                    }
                 </div>
             </div>
 
