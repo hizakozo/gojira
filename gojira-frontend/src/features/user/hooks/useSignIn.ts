@@ -1,5 +1,5 @@
 import {useMutation} from "@tanstack/react-query";
-import {authRepository} from "@/features/repository";
+import {authRepository} from "@/repository";
 
 export const useSignIn = (
     {

@@ -5,7 +5,7 @@ import {RouterProvider} from "@tanstack/react-router";
 import {Auth0ProviderContainer} from "@/lib/auth0/Auth0ProviderContainer.tsx";
 import {QueryClientProvider} from "@tanstack/react-query";
 import {myQueryClient} from "@/lib/tanstackQuery/QueryClient.ts";
-import {router} from "@/router";
+import {router} from "@/routes";
 
 
 createRoot(document.getElementById('root')!).render(

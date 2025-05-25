@@ -1,26 +1,25 @@
 import {useProject} from "@/features/project/hooks";
-import {ProjectCreate} from "@/features/project/components/ProjectCreate.tsx";
+import {CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import {Card} from "@/components/Card.tsx";
 
 export const ProjectList = () => {
-    const { data } = useProject()
+    const {data: projects} = useProject()
 
-    if (data === undefined) {
+    if (projects === undefined) {
         return <></>
     }
     return (
-        <div>
-
-            <ProjectCreate />
-
-            <h1>Project List</h1>
-            {
-                data.map((project) => (
-                    <div key={project.id}>
-                        <h2>{project.name}</h2>
-                        <p>{project.description}</p>
-                    </div>
-                ))
-            }
+        <div className="space-y-4">
+            {projects.map((project) => (
+                <Card
+                    key={project.id}
+                >
+                    <CardHeader>
+                        <CardTitle>{project.name}</CardTitle>
+                        <CardDescription>{project.description}</CardDescription>
+                    </CardHeader>
+                </Card>
+            ))}
         </div>
     );
 }
