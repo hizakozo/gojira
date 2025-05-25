@@ -13,17 +13,17 @@
  */
 
 
-import * as runtime from '../runtime.ts';
+import * as runtime from '../runtime';
 import type {
   TicketRequest,
   TicketResponse,
-} from '../models';
+} from '../models/index';
 import {
     TicketRequestFromJSON,
     TicketRequestToJSON,
     TicketResponseFromJSON,
     TicketResponseToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface DeleteTicketTicketIdRequest {
     ticketId: string;
@@ -101,11 +101,11 @@ export interface TicketApiInterface {
      * @throws {RequiredError}
      * @memberof TicketApiInterface
      */
-    postTicketRaw(requestParameters: PostTicketRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+    postTicketRaw(requestParameters: PostTicketRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TicketResponse>>;
 
     /**
      */
-    postTicket(ticketRequest?: TicketRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+    postTicket(ticketRequest?: TicketRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TicketResponse>;
 
     /**
      * 
@@ -115,11 +115,11 @@ export interface TicketApiInterface {
      * @throws {RequiredError}
      * @memberof TicketApiInterface
      */
-    putTicketTicketIdRaw(requestParameters: PutTicketTicketIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+    putTicketTicketIdRaw(requestParameters: PutTicketTicketIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TicketResponse>>;
 
     /**
      */
-    putTicketTicketId(ticketId: string, ticketRequest?: TicketRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+    putTicketTicketId(ticketId: string, ticketRequest?: TicketRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TicketResponse>;
 
 }
 
@@ -225,7 +225,7 @@ export class TicketApi extends runtime.BaseAPI implements TicketApiInterface {
 
     /**
      */
-    async postTicketRaw(requestParameters: PostTicketRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async postTicketRaw(requestParameters: PostTicketRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TicketResponse>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -240,18 +240,19 @@ export class TicketApi extends runtime.BaseAPI implements TicketApiInterface {
             body: TicketRequestToJSON(requestParameters['ticketRequest']),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => TicketResponseFromJSON(jsonValue));
     }
 
     /**
      */
-    async postTicket(ticketRequest?: TicketRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.postTicketRaw({ ticketRequest: ticketRequest }, initOverrides);
+    async postTicket(ticketRequest?: TicketRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TicketResponse> {
+        const response = await this.postTicketRaw({ ticketRequest: ticketRequest }, initOverrides);
+        return await response.value();
     }
 
     /**
      */
-    async putTicketTicketIdRaw(requestParameters: PutTicketTicketIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async putTicketTicketIdRaw(requestParameters: PutTicketTicketIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TicketResponse>> {
         if (requestParameters['ticketId'] == null) {
             throw new runtime.RequiredError(
                 'ticketId',
@@ -273,13 +274,14 @@ export class TicketApi extends runtime.BaseAPI implements TicketApiInterface {
             body: TicketRequestToJSON(requestParameters['ticketRequest']),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => TicketResponseFromJSON(jsonValue));
     }
 
     /**
      */
-    async putTicketTicketId(ticketId: string, ticketRequest?: TicketRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.putTicketTicketIdRaw({ ticketId: ticketId, ticketRequest: ticketRequest }, initOverrides);
+    async putTicketTicketId(ticketId: string, ticketRequest?: TicketRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TicketResponse> {
+        const response = await this.putTicketTicketIdRaw({ ticketId: ticketId, ticketRequest: ticketRequest }, initOverrides);
+        return await response.value();
     }
 
 }

@@ -35,6 +35,10 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketResponse'
   '/projects/{projectId}/tickets':
     parameters:
       - schema:
@@ -86,6 +90,10 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketResponse'
     delete:
       operationId: deleteTicketTicketId
       tags:
