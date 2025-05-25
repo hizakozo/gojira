@@ -38,12 +38,12 @@ const projectRoute = createRoute({
 
 const ticketRoute = createRoute({
     getParentRoute: () => rootRoute,
-    path: 'ticket',
+    path: 'ticket/$projectId',
 })
 
 const ticketIndexRoute = createRoute({
     getParentRoute: () => ticketRoute,
-    path: '$projectId/index',
+    path: 'index',
     component: TicketIndexPage
 })
 
