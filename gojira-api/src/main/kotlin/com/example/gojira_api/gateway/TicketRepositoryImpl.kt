@@ -39,7 +39,7 @@ class TicketRepositoryImpl(
             ticketId = ticketId.value,
             projectId = projectId.value,
             title = title.value,
-            content = content.value
+            content = content.toJSONB()
         )
 
     private fun TicketsRecord.toTicket() =
@@ -47,6 +47,6 @@ class TicketRepositoryImpl(
             ticketId = ticketId!!,
             projectId = projectId!!,
             title = title!!,
-            content = content!!
+            content = content!!.toString()
         )
 }

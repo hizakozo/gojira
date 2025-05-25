@@ -1,27 +1,21 @@
 "use client"
 
 import {Controller, useForm} from "react-hook-form"
-import { useParams } from "@tanstack/react-router"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import {MarkdownShortcuts} from "@/lib/tiptap/MarkdownShortcuts.tsx";
-import {type CreateTicket, useCreateTicket} from "@/features/ticket/hooks";
 import type {JSONContent} from "@tiptap/react";
+import type {TicketRequest} from "@/api";
 
 
 type Props = {
-    defaultValues: CreateTicket
+    defaultValues: TicketRequest
+    onSubmit: (data: TicketRequest) => void
 }
-export const TicketForm = ({defaultValues}: Props) => {
-    const { projectId } = useParams({ from: "/ticket/$projectId/create" })
-    const { register, handleSubmit, control, watch} = useForm<CreateTicket>({
+export const TicketForm = ({defaultValues, onSubmit}: Props) => {
+    const { register, handleSubmit, control, watch} = useForm<TicketRequest>({
         defaultValues
     })
-    const { mutateAsync } = useCreateTicket({ projectId })
-
-    const onSubmit = async (data: CreateTicket) => {
-        await mutateAsync(data)
-    }
 
     const getContent = () => {
         const formContent = watch("content")

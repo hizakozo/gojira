@@ -5,6 +5,7 @@ import {Layout} from "@/routes/Layout.tsx";
 import {ProjectListPage} from "@/pages/project/ProjectListPage.tsx";
 import {TicketIndexPage} from "@/pages/ticket/TicketIndexPage.tsx";
 import {TicketCreatePage} from "@/pages/ticket/TicketCreatePage.tsx";
+import {TicketEditPage} from "@/pages/ticket/TicketEditPage.tsx";
 
 
 const rootRoute = createRootRoute({
@@ -53,6 +54,12 @@ const ticketCreateRoute = createRoute({
     component: TicketCreatePage
 })
 
+const ticketEditRoute = createRoute({
+    getParentRoute: () => ticketRoute,
+    path: "edit/$ticketId",
+    component: TicketEditPage
+})
+
 
 const routeTree = rootRoute.addChildren([
     indexRoute,
@@ -63,7 +70,8 @@ const routeTree = rootRoute.addChildren([
     projectRoute,
     ticketRoute.addChildren([
         ticketIndexRoute,
-        ticketCreateRoute
+        ticketCreateRoute,
+        ticketEditRoute
     ])
 ])
 

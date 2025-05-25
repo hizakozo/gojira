@@ -8,6 +8,7 @@ import com.example.gojira_api.driver.gen.tables.Tickets
 
 import java.util.UUID
 
+import org.jooq.JSONB
 import org.jooq.Record1
 import org.jooq.impl.UpdatableRecordImpl
 
@@ -30,9 +31,9 @@ open class TicketsRecord() : UpdatableRecordImpl<TicketsRecord>(Tickets.TICKETS)
         set(value): Unit = set(2, value)
         get(): String? = get(2) as String?
 
-    open var content: String?
+    open var content: JSONB?
         set(value): Unit = set(3, value)
-        get(): String? = get(3) as String?
+        get(): JSONB? = get(3) as JSONB?
 
     // -------------------------------------------------------------------------
     // Primary key information
@@ -43,7 +44,7 @@ open class TicketsRecord() : UpdatableRecordImpl<TicketsRecord>(Tickets.TICKETS)
     /**
      * Create a detached, initialised TicketsRecord
      */
-    constructor(ticketId: UUID? = null, projectId: UUID? = null, title: String? = null, content: String? = null): this() {
+    constructor(ticketId: UUID? = null, projectId: UUID? = null, title: String? = null, content: JSONB? = null): this() {
         this.ticketId = ticketId
         this.projectId = projectId
         this.title = title

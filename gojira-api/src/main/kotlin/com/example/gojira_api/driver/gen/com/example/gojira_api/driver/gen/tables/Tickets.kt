@@ -19,6 +19,7 @@ import org.jooq.Condition
 import org.jooq.Field
 import org.jooq.ForeignKey
 import org.jooq.InverseForeignKey
+import org.jooq.JSONB
 import org.jooq.Name
 import org.jooq.Path
 import org.jooq.PlainSQL
@@ -93,7 +94,7 @@ open class Tickets(
     /**
      * The column <code>public.tickets.content</code>.
      */
-    val CONTENT: TableField<TicketsRecord, String?> = createField(DSL.name("content"), SQLDataType.VARCHAR(255).nullable(false), this, "")
+    val CONTENT: TableField<TicketsRecord, JSONB?> = createField(DSL.name("content"), SQLDataType.JSONB.nullable(false), this, "")
 
     private constructor(alias: Name, aliased: Table<TicketsRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<TicketsRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)

@@ -5,6 +5,7 @@ import arrow.core.raise.either
 import arrow.core.raise.ensure
 import com.example.gojira_api.domain.DomainError
 import com.example.gojira_api.domain.project.ProjectId
+import org.jooq.JSONB
 import java.util.UUID
 
 class Ticket private constructor(
@@ -107,6 +108,7 @@ class TicketTitle private constructor(
 class TicketContent private constructor(
     val value: String
 ) {
+    fun toJSONB(): JSONB = JSONB.valueOf(value)
     companion object {
         fun create(value: String): Either<DomainError, TicketContent> = either {
             ensure(value.isNotBlank()) {

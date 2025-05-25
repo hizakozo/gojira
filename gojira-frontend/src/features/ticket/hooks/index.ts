@@ -9,12 +9,23 @@ export const useTickets = ({projectId}: {projectId: string}) => {
     })
 }
 
-export type CreateTicket = Omit<TicketRequest, "projectId">
-export const useCreateTicket = ({projectId}: {projectId: string}) => {
+export const useTicket = ({ticketId}: {ticketId: string}) => {
+    return useQuery({
+        queryFn: () => ticketRepository.getTicketTicketId(ticketId),
+        queryKey: ['ticket', ticketId],
+    })
+}
+
+export const useCreateTicket = () => {
     return useMutation({
-        mutationFn: (data: CreateTicket) => ticketRepository.postTicket({
-            ...data,
-            projectId, // Ensure projectId is included
-        }),
+        mutationFn: (data: TicketRequest) => ticketRepository.postTicket(data),
+    })
+}
+
+export const useUpdateTicket = (
+    {ticketId}: {ticketId: string}
+) => {
+    return useMutation({
+        mutationFn: (data: TicketRequest) => ticketRepository.putTicketTicketId(ticketId, data),
     })
 }
